@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import "./css/style.css";
+import "~css/style.css";
 
 function Note({ text, updatedAt, createdAt, createdBy }) {
   return (
