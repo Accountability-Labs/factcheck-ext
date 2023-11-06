@@ -23,14 +23,17 @@ function IndexPopup() {
   const [notes, setNotes] = useState([])
 
   useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const fetchNotes = () => {
     chrome.runtime.sendMessage({
       contentScriptQuery: "getNotes",
-      url: 'https://jsonplaceholder.typicode.com/todos/1'
     }, function (response) {
       setNotes(response);
       return response
     });
-  });
+  };
 
   return (
     <div className="popup">
