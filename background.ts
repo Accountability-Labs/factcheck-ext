@@ -1,4 +1,4 @@
-import { hasStatusCode } from "./util";
+import { normalize, hasStatusCode } from "./util";
 
 export { }
 
@@ -23,13 +23,9 @@ function onOpenTab(_: any) {
         if (url === undefined) {
             return;
         }
-        checkNotesFor(normalize(url));
+        getNotesFor(normalize(url));
         currentUrl = normalize(url);
     });
-}
-
-function normalize(site: string): string {
-    return site.replace(/\/+$/, "");
 }
 
 function setIconBadge(notes: object[] | null) {
@@ -41,14 +37,14 @@ function setIconBadge(notes: object[] | null) {
 }
 
 function onPopupMessage(request, sender, sendResponse) {
-    console.log("Received message from popup.");
     switch (request.contentScriptQuery) {
         case "getNotes":
             let maybeNotes = encounteredNotes[currentUrl];
-            if (maybeNotes !== undefined) {
-                console.log("Sending response to popup:");
-                console.log(maybeNotes);
+            if (maybeNotes !== undefined && maybeNotes !== null) {
+                console.log("Sending " + maybeNotes.length + " notes to popup.");
                 sendResponse(maybeNotes);
+            } else {
+                sendResponse(null);
             }
     }
     return true;
@@ -56,8 +52,9 @@ function onPopupMessage(request, sender, sendResponse) {
 
 let encounteredNotes = {};
 
-async function checkNotesFor(url: string) {
-    let response;
+async function getNotesFor(url: string) {
+    console.log("Getting notes for " + url);
+    let response: Response;
     try {
         response = await fetch("http://localhost:8080/notes", {
             method: "POST",
@@ -70,7 +67,9 @@ async function checkNotesFor(url: string) {
             }),
         });
     } catch (error) {
+        console.error("Error retrieving notes from backend: " + error);
         console.error(error);
+        return;
     }
     if (!hasStatusCode(response, 200)) {
         return
