@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import "~css/style.css";
+import { postNote } from "~util";
 
 function Note({ text, updatedAt, createdAt, createdBy }) {
   return (
@@ -10,6 +11,30 @@ function Note({ text, updatedAt, createdAt, createdBy }) {
         updatedAt && updatedAt !== createdAt && <p>🤚 {fmtTime(updatedAt)}</p>
       }
       <p className="note-text">{text}</p>
+    </div>
+  )
+}
+
+function PostNote() {
+  const [submitted, setSubmitted] = useState("")
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      console.info(tabs);
+      postNote(tabs[0].url, e.target[0].value).then((success) => {
+        setSubmitted(success ? "✅" : "❌");
+      });
+    });
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" placeholder="Write a note..." />
+        <button type="submit">Submit</button>
+        <span>{submitted}</span>
+      </form>
     </div>
   )
 }
