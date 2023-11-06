@@ -33,30 +33,21 @@ function IndexPopup() {
   });
 
   return (
-    <div
-      style={{
-        width: "200px",
-        display: "flex",
-        flexDirection: "column",
-        padding: 16
-      }}>
-
-      <div>
-        {
-          notes === null ?
-            <h3>There are no notes for this page.</h3>
-            :
-            notes.length > 0 && notes.map((note) => (
-              <Note
-                text={note.note}
-                createdBy={note.email}
-                createdAt={note.created_at}
-                updatedAt={note.updated_at.Time}
-              />
-            ))
-        }
-      </div>
-
+    <div className="popup">
+      {
+        notes === null ?
+          <h3>There are no notes for this page.</h3>
+          :
+          notes.length > 0 && notes.map((note) => (
+            <Note
+              text={note.note}
+              createdBy={note.email}
+              createdAt={note.created_at}
+              updatedAt={note.updated_at.Time}
+            />
+          ))
+      }
+      <PostNote />
     </div >
   )
 }
