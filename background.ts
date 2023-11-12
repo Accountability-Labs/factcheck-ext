@@ -36,7 +36,7 @@ function setIconBadge(notes: object[] | null) {
     chrome.action.setBadgeText({ text: badgeText });
 }
 
-function onPopupMessage(request, sender, sendResponse) {
+function onPopupMessage(request: any, _: any, sendResponse: (response?: any) => void) {
     switch (request.contentScriptQuery) {
         case "getNotes":
             let maybeNotes = encounteredNotes[currentUrl];
