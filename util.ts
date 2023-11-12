@@ -1,4 +1,9 @@
 
+export function fmtTime(dateTime: string): string {
+    let parsedDateTime = new Date(Date.parse(dateTime));
+    return parsedDateTime.toDateString();
+}
+
 export function hasStatusCode(resp: Response, code: number): boolean {
     if (resp.status === code) {
         return true

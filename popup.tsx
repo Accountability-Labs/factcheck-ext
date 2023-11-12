@@ -1,50 +1,24 @@
 import { useState, useEffect } from "react"
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from "@mui/material";
+import { NoNotes, Note, PostNote } from "~notes";
 import "~css/style.css";
-import { postNote } from "~util";
 
-function Note({ text, updatedAt, createdAt, createdBy }) {
-  return (
-    <div className="note">
-      <p className="author">🧑‍💻 {createdBy}</p>
-      <p className="created-at">✍️ {fmtTime(createdAt)}</p>
-      {
-        updatedAt && updatedAt !== createdAt && <p>🤚 {fmtTime(updatedAt)}</p>
-      }
-      <p className="note-text">{text}</p>
-    </div>
-  )
-}
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: '#ffA400',
+    },
+  },
+});
 
-function PostNote() {
-  const [submitted, setSubmitted] = useState("")
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      console.info(tabs);
-      postNote(tabs[0].url, e.target[0].value).then((success) => {
-        setSubmitted(success ? "✅" : "❌");
-      });
-    });
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Write a note..." />
-        <button type="submit">Submit</button>
-        <span>{submitted}</span>
-      </form>
-    </div>
-  )
-}
-
-function fmtTime(dateTime: string): string {
-  let parsedDateTime = new Date(Date.parse(dateTime));
-  return parsedDateTime.toDateString();
-}
-
-function IndexPopup() {
+function App() {
   const [notes, setNotes] = useState([])
 
   useEffect(() => {
@@ -62,9 +36,10 @@ function IndexPopup() {
 
   return (
     <div className="popup">
+      <PostNote />
       {
         notes === null ?
-          <h3>There are no notes for this page.</h3>
+          <NoNotes />
           :
           notes.length > 0 && notes.map((note) => (
             <Note
@@ -75,8 +50,16 @@ function IndexPopup() {
             />
           ))
       }
-      <PostNote />
-    </div >
+    </div>
+  )
+}
+
+function IndexPopup() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
   )
 }
 
