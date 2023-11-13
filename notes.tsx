@@ -10,7 +10,7 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import { styled } from '@mui/material/styles';
-import { fmtTime, postNote } from "~util";
+import { fmtTime, postNote, postRating } from "~util";
 import { useState } from "react"
 
 const customIcons: {
@@ -98,7 +98,10 @@ export function PostNote() {
     )
 }
 
-export function Note({ text, updatedAt, createdAt, createdBy }) {
+export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
+    const [severity, setSeverity] = useState("")
+    const [notification, setNotification] = useState("")
+
     return (
         <Paper>
             <Grid container spacing={1} m={1}>
@@ -115,11 +118,23 @@ export function Note({ text, updatedAt, createdAt, createdBy }) {
                     <StyledRating
                         max={3}
                         name="highlight-selected-only"
-                        defaultValue={1}
+                        defaultValue={vote.Valid ? vote.Int32 : null}
+                        onChange={(event, vote) => {
+                            postRating(note_id, vote).then((success) => {
+                                if (success) {
+                                    setSeverity("success")
+                                    setNotification("Vote submitted successfully!")
+                                } else {
+                                    setSeverity("error")
+                                    setNotification("Failed to submit vote.")
+                                }
+                            });
+                        }}
                         IconContainerComponent={IconContainer}
                         getLabelText={(value: number) => customIcons[value].label}
                         highlightSelectedOnly
                     />
+                    <Notification severity={severity} text={notification} />
                 </Grid>
             </Grid>
         </Paper>
