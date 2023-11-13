@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { ApiKey } from "~constants";
+import { ApiKey, Backend } from "~constants";
 
 const storage = new Storage()
 
@@ -49,7 +49,7 @@ export async function makeReq(method: string, endpoint: string, note_id: number,
 export async function registerUser(form: FormData): Promise<string> {
     let response: Response;
     try {
-        response = await fetch("http://localhost:8080/user", {
+        response = await fetch(Backend + "/user", {
             method: "POST",
             body: JSON.stringify(Object.fromEntries(form)),
         });
@@ -68,7 +68,7 @@ export async function registerUser(form: FormData): Promise<string> {
 export async function postRating(note_id: number, vote: number): Promise<boolean> {
     let response: Response;
     try {
-        response = await fetch("http://localhost:8080/vote", {
+        response = await fetch(Backend + "/vote", {
             method: "POST",
             headers: {
                 "X-Auth-Token": "fae6cfd76dac8fc948996a0d8e8ca4e2fb3eadb9fda27b946a64fd45f09bfc36",
@@ -99,7 +99,7 @@ async function getHeaders(): Promise<Headers> {
 export async function postNote(url: string, note: string): Promise<boolean> {
     let response: Response;
     try {
-        response = await fetch("http://localhost:8080/note", {
+        response = await fetch(Backend + "/note", {
             method: "POST",
             headers: await getHeaders(),
             body: JSON.stringify({
