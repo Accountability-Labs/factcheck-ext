@@ -4,19 +4,7 @@ import { CssBaseline } from "@mui/material";
 import { NoNotes, Note, PostNote } from "~notes";
 import "~css/style.css";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#556cd6',
-    },
-    secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: '#ffA400',
-    },
-  },
-});
+const theme = createTheme({});
 
 function App() {
   const [notes, setNotes] = useState([])
@@ -43,8 +31,10 @@ function App() {
           :
           notes.length > 0 && notes.map((note) => (
             <Note
+              note_id={note.id}
+              vote={note.vote}
               text={note.note}
-              createdBy={note.email}
+              createdBy={note.user_name}
               createdAt={note.created_at}
               updatedAt={note.updated_at.Time}
             />
