@@ -9,12 +9,20 @@ export { }
 chrome.tabs.onActivated.addListener(onOpenTab);
 chrome.tabs.onUpdated.addListener(onOpenTab);
 chrome.runtime.onMessage.addListener(onPopupMessage);
+chrome.runtime.onInstalled.addListener(onInstall)
 
 // Use a white font on a red background, for extra emphasis.
 chrome.action.setBadgeBackgroundColor({ color: "#FF0000" });
 chrome.action.setBadgeTextColor({ color: "#FFFFFF" });
 
 let currentUrl = "";
+
+function onInstall(details: chrome.runtime.InstalledDetails) {
+    if (details.reason !== chrome.runtime.OnInstalledReason.INSTALL) {
+        return;
+    }
+    chrome.tabs.create({ url: "tabs/register.html" })
+}
 
 function onOpenTab(_: any) {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
