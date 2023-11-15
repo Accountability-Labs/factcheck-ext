@@ -11,7 +11,7 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import { styled } from '@mui/material/styles';
 import { apiRequest, fmtTime } from "~util";
-import { useState } from "react"
+import { useState } from "react";
 
 const customIcons: {
     [index: string]: {
@@ -21,7 +21,7 @@ const customIcons: {
 } = {
     1: {
         icon: <SentimentVeryDissatisfiedIcon color="error" />,
-        label: 'Unhelpful',
+        label: 'Not helpful',
     },
     2: {
         icon: <SentimentSatisfiedIcon color="warning" />,
@@ -120,7 +120,6 @@ export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
                         name="highlight-selected-only"
                         defaultValue={vote.Valid ? vote.Int32 : null}
                         onChange={(event, vote) => {
-
                             apiRequest("POST", "/vote", { note_id: note_id, vote: vote })
                                 .then((response) => {
                                     if ("error" in response) {
