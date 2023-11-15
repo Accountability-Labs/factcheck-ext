@@ -31,7 +31,7 @@ function App() {
     <div className="popup">
       <PostNote />
       {
-        notes === null ?
+        notes.length === 0 ?
           <NoNotes />
           :
           notes.length > 0 && notes.map((note) => (
