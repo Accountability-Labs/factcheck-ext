@@ -10,7 +10,7 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import { styled } from '@mui/material/styles';
-import { fmtTime, postNote, postRating } from "~util";
+import { apiRequest, fmtTime } from "~util";
 import { useState } from "react"
 
 const customIcons: {
@@ -44,7 +44,7 @@ function IconContainer(props: any) {
     return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-function Notification({ severity, text }) {
+export function Notification({ severity, text }) {
     return (
         severity !== "" ?
             <Box m={2}>
@@ -76,16 +76,16 @@ export function PostNote() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            console.info(tabs);
-            postNote(tabs[0].url, e.target[0].value).then((success) => {
-                if (success) {
-                    setSeverity("success")
-                    setNotification("Note posted successfully")
-                } else {
-                    setSeverity("error")
-                    setNotification("Note failed to post")
-                }
-            });
+            apiRequest("POST", "/note", { url: tabs[0].url, note: e.target[0].value })
+                .then((response) => {
+                    if ("error" in response) {
+                        setSeverity("error")
+                        setNotification(response.error)
+                    } else {
+                        setSeverity("success")
+                        setNotification("Note posted successfully")
+                    }
+                });
         });
     }
 
@@ -120,15 +120,17 @@ export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
                         name="highlight-selected-only"
                         defaultValue={vote.Valid ? vote.Int32 : null}
                         onChange={(event, vote) => {
-                            postRating(note_id, vote).then((success) => {
-                                if (success) {
-                                    setSeverity("success")
-                                    setNotification("Vote submitted successfully!")
-                                } else {
-                                    setSeverity("error")
-                                    setNotification("Failed to submit vote.")
-                                }
-                            });
+
+                            apiRequest("POST", "/vote", { note_id: note_id, vote: vote })
+                                .then((response) => {
+                                    if ("error" in response) {
+                                        setSeverity("error")
+                                        setNotification(response.error)
+                                    } else {
+                                        setSeverity("success")
+                                        setNotification("Vote submitted successfully!")
+                                    }
+                                });
                         }}
                         IconContainerComponent={IconContainer}
                         getLabelText={(value: number) => customIcons[value].label}

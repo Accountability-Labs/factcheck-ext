@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
-import { registerUser } from '~util';
+import { apiRequest } from '~util';
 import { ApiKey } from "~constants";
 import { Storage } from "@plasmohq/storage"
 
@@ -20,9 +20,8 @@ function RegistrationForm() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-
-        registerUser(data).then(async (json_resp) => {
-            await storage.set(ApiKey, json_resp[ApiKey]);
+        apiRequest("POST", "/user", Object.fromEntries(data)).then(async (jsonResp) => {
+            await storage.set(ApiKey, jsonResp[ApiKey]);
             console.info(await storage.get(ApiKey));
         });
     };

@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
-import { NoNotes, Note, PostNote } from "~notes";
+import { NoNotes, Note, PostNote, Notification } from "~notes";
 import "~css/style.css";
 
 const theme = createTheme({});
 
 function App() {
   const [notes, setNotes] = useState([])
+  const [error, setError] = useState("")
 
   useEffect(() => {
     fetchNotes();
@@ -17,6 +18,10 @@ function App() {
     chrome.runtime.sendMessage({
       contentScriptQuery: "getNotes",
     }, function (response) {
+      if ("error" in response) {
+        setError(response.error);
+        return
+      }
       setNotes(response);
       return response
     });
@@ -39,6 +44,13 @@ function App() {
               updatedAt={note.updated_at.Time}
             />
           ))
+      }
+      {
+        error !== ""
+          ?
+          <Notification severity="error" text={error} />
+          :
+          <></>
       }
     </div>
   )

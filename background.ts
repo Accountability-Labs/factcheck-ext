@@ -1,4 +1,4 @@
-import { normalize, hasStatusCode } from "./util";
+import { normalize, apiRequest } from "~util";
 
 export { }
 
@@ -36,9 +36,9 @@ function onOpenTab(_: any) {
     });
 }
 
-function setIconBadge(notes: object[] | null) {
+function setIconBadge(notes: Array<Object> | null) {
     let badgeText = "";
-    if (notes !== null) {
+    if (notes !== null && notes.length > 0) {
         badgeText = notes.length.toString();
     }
     chrome.action.setBadgeText({ text: badgeText });
@@ -61,29 +61,10 @@ function onPopupMessage(request: any, _: any, sendResponse: (response?: any) => 
 let encounteredNotes = {};
 
 async function getNotesFor(url: string) {
-    console.log("Getting notes for " + url);
-    let response: Response;
-    try {
-        response = await fetch("http://localhost:8080/notes", {
-            method: "POST",
-            headers: {
-                "X-Auth-Token": "fae6cfd76dac8fc948996a0d8e8ca4e2fb3eadb9fda27b946a64fd45f09bfc36",
-            },
-            body: JSON.stringify({
-                url: url,
-                limit: 10,
-            }),
-        });
-    } catch (error) {
-        console.error("Error retrieving notes from backend: " + error);
-        console.error(error);
-        return;
+    console.debug("Retrieving notes for URL: " + url);
+    const notes = await apiRequest("POST", "/notes", { "url": url, "limit": 5 })
+    if (!notes.hasOwnProperty("error")) {
+        setIconBadge(notes as Array<Object>);
     }
-    if (!hasStatusCode(response, 200)) {
-        return
-    }
-
-    const notes = await response.json();
-    setIconBadge(notes);
     encounteredNotes[url] = notes;
 }
