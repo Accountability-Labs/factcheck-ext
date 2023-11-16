@@ -1,2 +1,2 @@
 export const ApiKey = "api_key";
-export const Backend = "http://localhost:8080";
+export const Backend = "https://factcheck.nymity.ch";
