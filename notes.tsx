@@ -10,8 +10,9 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import { styled } from '@mui/material/styles';
-import { apiRequest, fmtTime } from "~util";
 import { useState } from "react";
+import { apiRequest, fmtTime } from "~util";
+import { api } from "~constants";
 
 const customIcons: {
     [index: string]: {
@@ -75,7 +76,7 @@ export function PostNote() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            apiRequest("POST", "/note", { url: tabs[0].url, note: e.target[0].value })
+            apiRequest(api.postNote, { url: tabs[0].url, note: e.target[0].value })
                 .then((response) => {
                     if ("error" in response) {
                         setNotification({ severity: "error", text: response.error })
@@ -116,7 +117,7 @@ export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
                         name="highlight-selected-only"
                         defaultValue={vote.Valid ? vote.Int32 : null}
                         onChange={(event, vote) => {
-                            apiRequest("POST", "/vote", { note_id: note_id, vote: vote })
+                            apiRequest(api.postVote, { note_id: note_id, vote: vote })
                                 .then((response) => {
                                     if ("error" in response) {
                                         setNotification({ severity: "error", text: response.error })

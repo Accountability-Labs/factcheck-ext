@@ -10,7 +10,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
 import { apiRequest } from '~util';
-import { ApiKey } from "~constants";
+import { ApiKey, api } from "~constants";
 import { Storage } from "@plasmohq/storage"
 import { Notification } from '~notes';
 import { useState } from "react";
@@ -24,7 +24,7 @@ function RegistrationForm() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        apiRequest("POST", "/user", Object.fromEntries(data)).then(async (jsonResp) => {
+        apiRequest(api.postUser, Object.fromEntries(data)).then(async (jsonResp) => {
             await storage.set(ApiKey, jsonResp[ApiKey]);
             console.info(await storage.get(ApiKey));
             setNotification({ severity: "success", text: "Successfully registered!" });

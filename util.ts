@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { ApiKey, Backend } from "~constants";
+import { ApiKey, Backend, apiErrPrefix } from "~constants";
 
 const storage = new Storage()
 
@@ -16,10 +16,13 @@ export type ApiError = {
     error: string;
 };
 
-export async function apiRequest(method: string, path: string, body?: object): Promise<object[] | ApiError> {
+export async function apiRequest(
+    endpoint: { method: string, path: string },
+    body?: object
+): Promise<object[] | ApiError> {
     try {
         let reqInit = {
-            method: method,
+            method: endpoint.method,
             headers: {
                 "X-Auth-Token": await storage.get(ApiKey),
                 "Content-Type": "application/json",
@@ -28,11 +31,11 @@ export async function apiRequest(method: string, path: string, body?: object): P
         if (body !== undefined) {
             reqInit["body"] = JSON.stringify(body);
         }
-        const response = await fetch(Backend + path, reqInit);
+        const response = await fetch(Backend + endpoint.path, reqInit);
         const jsonBody = await response.json();
         if ("error" in jsonBody) {
             // Make the error message more descriptive.
-            jsonBody.error = "Backend says: " + jsonBody.error;
+            jsonBody.error = apiErrPrefix[endpoint.path] + jsonBody.error;
         }
         return jsonBody;
     } catch (error) {

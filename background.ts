@@ -1,4 +1,5 @@
 import { normalize, apiRequest } from "~util";
+import { api } from "~constants";
 
 export { }
 
@@ -62,7 +63,7 @@ let encounteredNotes = {};
 
 async function getNotesFor(url: string) {
     console.debug("Retrieving notes for URL: " + url);
-    const notes = await apiRequest("POST", "/notes", { "url": url, "limit": 5 })
+    const notes = await apiRequest(api.postNotes, { "url": url, "limit": 5 })
     console.log(notes);
     if (!notes.hasOwnProperty("error")) {
         setIconBadge(notes as Array<Object>);
