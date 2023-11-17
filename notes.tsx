@@ -56,20 +56,6 @@ export function Notification({ severity, text }) {
     )
 }
 
-export function NoNotes() {
-    return (
-        <Box
-            m={3}
-            display="flex"
-            alignItems="center"
-            justifyContent="center">
-            <Typography variant="body1" color="text.secondary">
-                Noone has posted a note for this page.
-            </Typography>
-        </Box>
-    )
-}
-
 export function PostNote() {
     const [notification, setNotification] = useState({ severity: "", text: "" })
 
@@ -99,7 +85,7 @@ export function PostNote() {
 export function ShowNotes({ notes }) {
     return (
         notes.hasOwnProperty("length") && notes.length === 0 ?
-            <NoNotes />
+            <Notification severity="info" text="Nobody has posted a note for this page." />
             :
             notes.length > 0 && notes.map((note) => (
                 <Note
