@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
-import { NoNotes, Note, PostNote, Notification } from "~notes";
+import { PostNote, Notification, ShowNotes } from "~notes";
 import "~css/style.css";
 
 const theme = createTheme({});
 
 function App() {
-  const [notes, setNotes] = useState([])
-  const [error, setError] = useState("")
+  const [notes, setNotes] = useState(null)
+  const [notification, setNotification] = useState({ severity: "", text: "" })
 
   useEffect(() => {
     fetchNotes();
@@ -19,7 +19,7 @@ function App() {
       contentScriptQuery: "getNotes",
     }, function (response) {
       if ("error" in response) {
-        setError(response.error);
+        setNotification({ severity: "error", text: response.error });
         return
       }
       setNotes(response);
@@ -31,27 +31,11 @@ function App() {
     <div className="popup">
       <PostNote />
       {
-        notes.length === 0 ?
-          <NoNotes />
-          :
-          notes.length > 0 && notes.map((note) => (
-            <Note
-              note_id={note.id}
-              vote={note.vote}
-              text={note.note}
-              createdBy={note.user_name}
-              createdAt={note.created_at}
-              updatedAt={note.updated_at.Time}
-            />
-          ))
+        Array.isArray(notes) ?
+          <ShowNotes notes={notes} />
+          : <>  </>
       }
-      {
-        error !== ""
-          ?
-          <Notification severity="error" text={error} />
-          :
-          <></>
-      }
+      <Notification severity={notification.severity} text={notification.text} />
     </div>
   )
 }

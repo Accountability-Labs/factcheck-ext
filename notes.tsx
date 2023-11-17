@@ -96,6 +96,24 @@ export function PostNote() {
     )
 }
 
+export function ShowNotes({ notes }) {
+    return (
+        notes.hasOwnProperty("length") && notes.length === 0 ?
+            <NoNotes />
+            :
+            notes.length > 0 && notes.map((note) => (
+                <Note
+                    note_id={note.id}
+                    vote={note.vote}
+                    text={note.note}
+                    createdBy={note.user_name}
+                    createdAt={note.created_at}
+                    updatedAt={note.updated_at.Time}
+                />
+            ))
+    )
+}
+
 export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
     const [notification, setNotification] = useState({ severity: "", text: "" })
 

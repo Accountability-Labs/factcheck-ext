@@ -45,16 +45,20 @@ function setIconBadge(notes: Array<Object> | null) {
     chrome.action.setBadgeText({ text: badgeText });
 }
 
-function onPopupMessage(request: any, _: any, sendResponse: (response?: any) => void) {
+type ApiError = {
+    error: string;
+};
+type ApiNote = {
+    url: string;
+    note: string;
+}
+type ApiNotes = [ApiNote];
+
+function onPopupMessage(request: any, _: any, sendResponse: (response?: ApiNotes | ApiError) => void) {
     switch (request.contentScriptQuery) {
         case "getNotes":
-            let maybeNotes = encounteredNotes[currentUrl];
-            if (maybeNotes !== undefined && maybeNotes !== null) {
-                console.log("Sending " + maybeNotes.length + " notes to popup.");
-                sendResponse(maybeNotes);
-            } else {
-                sendResponse(null);
-            }
+            const maybeNotes = encounteredNotes[currentUrl];
+            sendResponse(maybeNotes);
     }
     return true;
 }
