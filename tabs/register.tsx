@@ -6,23 +6,30 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
 import { apiRequest } from '~util';
 import { ApiKey } from "~constants";
 import { Storage } from "@plasmohq/storage"
-
+import { Notification } from '~notes';
+import { useState } from "react";
 
 const defaultTheme = createTheme();
 const storage = new Storage()
 
 function RegistrationForm() {
+    const [notification, setNotification] = useState({ severity: "", text: "" })
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         apiRequest("POST", "/user", Object.fromEntries(data)).then(async (jsonResp) => {
             await storage.set(ApiKey, jsonResp[ApiKey]);
             console.info(await storage.get(ApiKey));
+            setNotification({ severity: "success", text: "Successfully registered!" });
+        }).catch((err) => {
+            setNotification({ severity: "error", text: err });
         });
     };
 
@@ -71,6 +78,8 @@ function RegistrationForm() {
                     Sign Up
                 </Button>
             </Box>
+            <Notification severity="info" text={< Typography > Once registered, visit <Link href="https://www.nytimes.com/2017/08/15/us/politics/trump-charlottesville-white-nationalists.html">this link</Link> to see the extension in action.</Typography >} />
+            <Notification severity={notification.severity} text={notification.text} />
         </Box>
     )
 }
