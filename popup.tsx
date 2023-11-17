@@ -30,11 +30,7 @@ function App() {
   return (
     <div className="popup">
       <PostNote />
-      {
-        Array.isArray(notes) ?
-          <ShowNotes notes={notes} />
-          : <>  </>
-      }
+      {Array.isArray(notes) && <ShowNotes notes={notes} />}
       <Notification severity={notification.severity} text={notification.text} />
     </div>
   )
