@@ -70,8 +70,7 @@ export function NoNotes() {
 }
 
 export function PostNote() {
-    const [severity, setSeverity] = useState("")
-    const [notification, setNotification] = useState("")
+    const [notification, setNotification] = useState({ severity: "", text: "" })
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -79,11 +78,9 @@ export function PostNote() {
             apiRequest("POST", "/note", { url: tabs[0].url, note: e.target[0].value })
                 .then((response) => {
                     if ("error" in response) {
-                        setSeverity("error")
-                        setNotification(response.error)
+                        setNotification({ severity: "error", text: response.error })
                     } else {
-                        setSeverity("success")
-                        setNotification("Note posted successfully")
+                        setNotification({ severity: "success", text: "Note posted successfully!" })
                     }
                 });
         });
@@ -93,14 +90,13 @@ export function PostNote() {
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField multiline margin="normal" fullWidth id="outlined-basic" label="Add context for fellow readers..." variant="outlined" />
             <Button type="submit" fullWidth variant="contained">Submit</Button>
-            <Notification severity={severity} text={notification} />
+            <Notification severity={notification.severity} text={notification.text} />
         </Box>
     )
 }
 
 export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
-    const [severity, setSeverity] = useState("")
-    const [notification, setNotification] = useState("")
+    const [notification, setNotification] = useState({ severity: "", text: "" })
 
     return (
         <Paper>
@@ -123,11 +119,9 @@ export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
                             apiRequest("POST", "/vote", { note_id: note_id, vote: vote })
                                 .then((response) => {
                                     if ("error" in response) {
-                                        setSeverity("error")
-                                        setNotification(response.error)
+                                        setNotification({ severity: "error", text: response.error })
                                     } else {
-                                        setSeverity("success")
-                                        setNotification("Vote submitted successfully!")
+                                        setNotification({ severity: "success", text: "Vote submitted successfully!" })
                                     }
                                 });
                         }}
@@ -135,7 +129,7 @@ export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
                         getLabelText={(value: number) => customIcons[value].label}
                         highlightSelectedOnly
                     />
-                    <Notification severity={severity} text={notification} />
+                    <Notification severity={notification.severity} text={notification.text} />
                 </Grid>
             </Grid>
         </Paper>
