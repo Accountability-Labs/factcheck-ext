@@ -29,10 +29,12 @@ export async function apiRequest(method: string, path: string, body?: object): P
             reqInit["body"] = JSON.stringify(body);
         }
         const response = await fetch(Backend + path, reqInit);
-        if ("error" in response) {
-            response.error = "Backend reports \"" + response.error + "\".";
+        const jsonBody = await response.json();
+        if ("error" in jsonBody) {
+            // Make the error message more descriptive.
+            jsonBody.error = "Backend says: " + jsonBody.error;
         }
-        return response.json();
+        return jsonBody;
     } catch (error) {
         console.error("Error talking to backend API: " + error);
         return { "error": "Error talking to backend API." } as unknown as Promise<ApiError>
