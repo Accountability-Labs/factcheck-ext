@@ -13,7 +13,7 @@ import Modal from '@mui/material/Modal';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
 import { Storage } from "@plasmohq/storage"
-import { apiRequest } from '~util';
+import { apiRequest, isAuthenticated } from '~util';
 import { ApiKey, api } from "~constants";
 import { Notification } from '~notes';
 
@@ -29,12 +29,6 @@ const overlayStyle = {
     boxShadow: 24,
     p: 4,
 };
-
-async function isAuthenticated(): Promise<boolean> {
-    const apiKey = await storage.get(ApiKey);
-    console.log("API key: " + apiKey);
-    return apiKey !== undefined;
-}
 
 function isValidInput({ data }, setNotification): boolean {
     if (data.email === "" || data.password === "" || data?.username === "") {

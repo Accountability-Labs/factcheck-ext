@@ -13,15 +13,18 @@ export type ApiError = {
     error: string;
 };
 
+export async function isAuthenticated(): Promise<boolean> {
+    const apiKey = await storage.get(ApiKey);
+    console.log("API key: " + apiKey);
+    return apiKey !== undefined;
+}
+
 export async function apiRequest(
     endpoint: { method: string, path: string },
     body?: object
 ): Promise<object[] | ApiError> {
     try {
         const apiKey = await storage.get(ApiKey);
-        if (apiKey === undefined) {
-            return { "error": "You are not logged in." } as unknown as Promise<ApiError>;
-        }
         let reqInit = {
             method: endpoint.method,
             headers: {
