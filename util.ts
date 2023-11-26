@@ -18,10 +18,14 @@ export async function apiRequest(
     body?: object
 ): Promise<object[] | ApiError> {
     try {
+        const apiKey = await storage.get(ApiKey);
+        if (apiKey === undefined) {
+            return { "error": "You are not logged in." } as unknown as Promise<ApiError>;
+        }
         let reqInit = {
             method: endpoint.method,
             headers: {
-                "X-Auth-Token": await storage.get(ApiKey),
+                "X-Auth-Token": apiKey,
                 "Content-Type": "application/json",
             }
         }
