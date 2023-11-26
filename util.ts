@@ -1,7 +1,4 @@
-import { Storage } from "@plasmohq/storage"
-import { ApiKey, Backend, apiErrPrefix } from "~constants";
-
-const storage = new Storage()
+import { ApiKey, Backend, apiErrPrefix, storage } from "~constants";
 
 export function fmtTime(dateTime: string): string {
     let parsedDateTime = new Date(Date.parse(dateTime));
