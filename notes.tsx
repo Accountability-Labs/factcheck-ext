@@ -11,7 +11,7 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import { styled } from '@mui/material/styles';
 import { useState } from "react";
-import { apiRequest, fmtTime } from "~util";
+import { apiRequest, fmtTime, normalize } from "~util";
 import { api } from "~constants";
 
 const customIcons: {
@@ -62,7 +62,7 @@ export function PostNote() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            apiRequest(api.postNote, { url: tabs[0].url, note: e.target[0].value })
+            apiRequest(api.postNote, { url: normalize(tabs[0].url), note: e.target[0].value })
                 .then((response) => {
                     if ("error" in response) {
                         setNotification({ severity: "error", text: response.error })
