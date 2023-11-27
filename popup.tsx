@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, Link } from "@mui/material";
+import { Divider } from '@mui/material';
+import { IconButton } from '@mui/material';
+import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LoginIcon from '@mui/icons-material/Login';
 import Typography from '@mui/material/Typography';
-
 import { PostNote, Notification, ShowNotes } from "~notes";
 import { isAuthenticated } from "~util";
+import { extName } from "~constants";
 import "~css/style.css";
 
 const theme = createTheme({});
@@ -35,10 +38,17 @@ function App() {
 
   return (
     <div>
-      <PostNote />
-      {Array.isArray(notes) && <ShowNotes notes={notes} />}
-      <Notification severity={notification.severity} text={notification.text} />
-      <ControlIcons />
+      <Box m={1}>
+        <ControlIcons />
+      </Box>
+
+      <Divider />
+
+      <Box m={1}>
+        <PostNote />
+        {Array.isArray(notes) && <ShowNotes notes={notes} />}
+        <Notification severity={notification.severity} text={notification.text} />
+      </Box>
     </div>
   )
 }
@@ -46,11 +56,28 @@ function App() {
 function ControlIcons() {
   return (
     <Grid container>
-      <Grid item xs={1}>
-        <Link href="tabs/settings.html" target="_blank"><SettingsIcon /></Link>
+      <Grid item xs={10}>
+        <Typography variant="h6">
+          {extName}
+        </Typography>
       </Grid>
       <Grid item xs={1}>
-        <Link href="tabs/auth.html" target="_blank"><LoginIcon /></Link>
+        <IconButton
+          aria-label="Sign in or sign up"
+          size="small"
+          onClick={() => chrome.tabs.create({ url: "tabs/auth.html" })}
+        >
+          <LoginIcon />
+        </IconButton>
+      </Grid>
+      <Grid item xs={1}>
+        <IconButton
+          aria-label="Settings"
+          size="small"
+          onClick={() => chrome.tabs.create({ url: "tabs/settings.html" })}
+        >
+          <SettingsIcon />
+        </IconButton>
       </Grid>
     </Grid>
   )
