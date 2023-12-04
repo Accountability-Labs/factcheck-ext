@@ -9,6 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LoginIcon from '@mui/icons-material/Login';
 import ExploreIcon from '@mui/icons-material/Explore';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import { PostNote, Notification, ShowNotes } from "~notes";
 import { isAuthenticated } from "~util";
 import { extName } from "~constants";
@@ -62,32 +63,38 @@ function ControlIcons() {
           {extName}
         </Typography>
       </Grid>
+      <Tooltip title="Explore notes">
+        <Grid item xs={1}>
+          <IconButton
+            aria-label="Explore notes"
+            size="small"
+            onClick={() => chrome.tabs.create({ url: "https://factcheck-web.nymity.ch" })}
+          >
+            <ExploreIcon />
+          </IconButton>
+        </Grid>
+      </Tooltip>
+      <Tooltip title="Sign in/up">
+        <Grid item xs={1}>
+          <IconButton
+            aria-label="Sign in or sign up"
+            size="small"
+            onClick={() => chrome.tabs.create({ url: "tabs/auth.html" })}
+          >
+            <LoginIcon />
+          </IconButton>
+        </Grid>
+      </Tooltip>
       <Grid item xs={1}>
-        <IconButton
-          aria-label="Explore notes"
-          size="small"
-          onClick={() => chrome.tabs.create({ url: "https://factcheck-web.nymity.ch" })}
-        >
-          <ExploreIcon />
-        </IconButton>
-      </Grid>
-      <Grid item xs={1}>
-        <IconButton
-          aria-label="Sign in or sign up"
-          size="small"
-          onClick={() => chrome.tabs.create({ url: "tabs/auth.html" })}
-        >
-          <LoginIcon />
-        </IconButton>
-      </Grid>
-      <Grid item xs={1}>
-        <IconButton
-          aria-label="Settings"
-          size="small"
-          onClick={() => chrome.tabs.create({ url: "tabs/settings.html" })}
-        >
-          <SettingsIcon />
-        </IconButton>
+        <Tooltip title="Extension settings">
+          <IconButton
+            aria-label="Settings"
+            size="small"
+            onClick={() => chrome.tabs.create({ url: "tabs/settings.html" })}
+          >
+            <SettingsIcon />
+          </IconButton>
+        </Tooltip>
       </Grid>
     </Grid>
   )
