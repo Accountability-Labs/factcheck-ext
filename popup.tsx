@@ -7,6 +7,7 @@ import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LoginIcon from '@mui/icons-material/Login';
+import ExploreIcon from '@mui/icons-material/Explore';
 import Typography from '@mui/material/Typography';
 import { PostNote, Notification, ShowNotes } from "~notes";
 import { isAuthenticated } from "~util";
@@ -56,10 +57,19 @@ function App() {
 function ControlIcons() {
   return (
     <Grid container>
-      <Grid item xs={10}>
+      <Grid item xs={9}>
         <Typography variant="h6">
           {extName}
         </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <IconButton
+          aria-label="Explore notes"
+          size="small"
+          onClick={() => chrome.tabs.create({ url: "https://factcheck-web.nymity.ch" })}
+        >
+          <ExploreIcon />
+        </IconButton>
       </Grid>
       <Grid item xs={1}>
         <IconButton
