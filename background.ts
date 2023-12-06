@@ -70,7 +70,7 @@ async function getNotesFor(url: string) {
     const notes = await apiRequest(api.postNotes, { "url": url, "limit": 5 })
     console.log(notes);
     if (!notes.hasOwnProperty("error")) {
-        setIconBadge(notes as Array<Object>);
+        setIconBadge(notes.data as Array<Object>);
     }
     encounteredNotes[url] = notes;
 }

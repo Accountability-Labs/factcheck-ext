@@ -9,9 +9,10 @@ export function normalize(site: string): string {
     return site.replace(/\/+$/, "");
 }
 
-export type ApiError = {
-    error: string;
-};
+export type ApiResp = {
+    error?: string,
+    data?: object[],
+}
 
 export async function isAuthenticated(): Promise<boolean> {
     const apiKey = await storage.get(ApiKey);
@@ -22,7 +23,7 @@ export async function isAuthenticated(): Promise<boolean> {
 export async function apiRequest(
     endpoint: { method: string, path: string },
     body?: object
-): Promise<object[] | ApiError> {
+): Promise<ApiResp> {
     try {
         const apiKey = await storage.get(ApiKey);
         let reqInit = {
@@ -40,10 +41,12 @@ export async function apiRequest(
         if ("error" in jsonBody) {
             // Make the error message more descriptive.
             jsonBody.error = apiErrPrefix[endpoint.path] + jsonBody.error;
+        } else if (!("data" in jsonBody)) {
+            return { "error": "API did not return a 'data' attribute." }
         }
         return jsonBody;
     } catch (error) {
         console.error("Error talking to backend API: " + error);
-        return { "error": "Error talking to backend API." } as unknown as Promise<ApiError>
+        return { "error": "Error talking to backend API." } as unknown as Promise<ApiResp>
     }
 }

@@ -59,7 +59,7 @@ function handleRequest(endpoint, data, setNotification, setIsLoggedIn) {
             return;
         }
 
-        await storage.set(ApiKey, resp[ApiKey]);
+        await storage.set(ApiKey, resp.data[ApiKey]);
         setNotification({ severity: "success", text: "You are now logged in!" });
         setTimeout(() => { setIsLoggedIn(true) }, 1000);
     }).catch((err) => {

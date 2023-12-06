@@ -33,7 +33,7 @@ function App() {
         setNotification({ severity: "error", text: response.error });
         return
       }
-      setNotes(response);
+      setNotes(response.data);
       return response
     });
   };
