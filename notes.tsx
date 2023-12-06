@@ -100,22 +100,37 @@ export function ShowNotes({ notes }) {
     )
 }
 
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(2),
+    maxWidth: 400,
+    color: theme.palette.text.primary,
+}));
+
 export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
     const [notification, setNotification] = useState({ severity: "", text: "" })
 
     return (
-        <Paper>
-            <Grid container spacing={1} m={1}>
-                <Grid item xs={6}>
+
+        <StyledPaper
+            sx={{
+                my: 1,
+                mx: 'auto',
+                p: 2,
+            }}
+        >
+            <Grid container columns={2}>
+                <Grid item xs={1} md={1} sm={1}>
                     <Typography fontWeight="light" fontSize="1em">{fmtTime(createdAt)}</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={1} md={1} sm={1}>
                     <Typography fontWeight="light" fontSize="1em">{createdBy}</Typography>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={2} md={2} sm={2}>
                     <Typography variant="body2">{text}</Typography>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={2} md={2} sm={2}>
                     <StyledRating
                         max={3}
                         name="highlight-selected-only"
@@ -137,6 +152,7 @@ export function Note({ note_id, text, vote, updatedAt, createdAt, createdBy }) {
                     <Notification severity={notification.severity} text={notification.text} />
                 </Grid>
             </Grid>
-        </Paper>
+        </StyledPaper>
+
     )
 }
