@@ -163,6 +163,7 @@ function SignInOverlay({ setIsLoggedIn }) {
                                 autoComplete="password"
                                 name="password"
                                 id="password"
+                                type="password"
                                 label="Password"
                             />
                         </Grid>
@@ -231,6 +232,7 @@ function SignUpOverlay({ setIsLoggedIn }) {
                                 autoComplete="password"
                                 name="password"
                                 id="password"
+                                type="password"
                                 label="Password"
                             />
                         </Grid>
