@@ -1,7 +1,7 @@
 {
   "name": "factcheck-ext",
   "displayName": "Factcheck ext",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Crowd-sourced fact checking",
   "author": "David & Philipp",
   "scripts": {
