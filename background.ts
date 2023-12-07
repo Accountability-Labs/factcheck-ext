@@ -22,7 +22,7 @@ function onInstall(details: chrome.runtime.InstalledDetails) {
     if (details.reason !== chrome.runtime.OnInstalledReason.INSTALL) {
         return;
     }
-    chrome.tabs.create({ url: "tabs/register.html" })
+    chrome.tabs.create({ url: "tabs/auth.html" })
 }
 
 function onOpenTab(_: any) {
