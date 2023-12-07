@@ -31,7 +31,7 @@ const overlayStyle = {
 };
 
 function isValidInput({ data }, setNotification): boolean {
-    if (data.email === "" || data.password === "" || data?.username === "") {
+    if (data.email === "" || data.password === "" || data?.user_name === "") {
         setNotification({
             severity: "error",
             "text": "Please fill out all fields."
@@ -211,10 +211,10 @@ function SignUpOverlay({ setIsLoggedIn }) {
                             <TextField required
                                 autoFocus
                                 fullWidth
-                                id="username"
+                                id="user_name"
                                 label="Username"
-                                name="username"
-                                autoComplete="username"
+                                name="user_name"
+                                autoComplete="user_name"
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
