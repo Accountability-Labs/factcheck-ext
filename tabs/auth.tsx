@@ -14,7 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from "@mui/material";
 import { Storage } from "@plasmohq/storage"
 import { apiRequest, isAuthenticated } from '~util';
-import { ApiKey, api } from "~constants";
+import { ApiKey, api, extName } from "~constants";
 import { Notification } from '~notes';
 
 const defaultTheme = createTheme();
@@ -99,10 +99,10 @@ function LogoutSection({ setIsLoggedIn }) {
             <Notification severity="info" text={
                 < Typography >
                     Visit&nbsp;
-                    <Link href="https://www.nytimes.com/2017/08/15/us/politics/trump-charlottesville-white-nationalists.html">
-                        this link
+                    <Link href="https://vox.nymity.ch/docs">
+                        our documentation
                     </Link>
-                    &nbsp;to see the extension in action.
+                    &nbsp;to learn how to use {extName} and to see the extension in action.
                 </Typography >}
             />
         </Box>
