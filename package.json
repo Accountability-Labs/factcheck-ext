@@ -1,6 +1,6 @@
 {
-  "name": "factcheck-ext",
-  "displayName": "Factcheck ext",
+  "name": "vox-ext",
+  "displayName": "Vox",
   "version": "0.0.2",
   "description": "Crowd-sourced fact checking",
   "author": "David & Philipp",

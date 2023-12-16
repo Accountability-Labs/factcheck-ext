@@ -68,7 +68,7 @@ function ControlIcons() {
           <IconButton
             aria-label="Explore notes"
             size="small"
-            onClick={() => chrome.tabs.create({ url: "https://factcheck.nymity.ch" })}
+            onClick={() => chrome.tabs.create({ url: "https://vox.nymity.ch" })}
           >
             <ExploreIcon />
           </IconButton>

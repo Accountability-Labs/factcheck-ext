@@ -3,8 +3,8 @@ import { Storage } from "@plasmohq/storage";
 export const storage = new Storage()
 
 export const ApiKey = "api_key";
-export const Backend = "https://factcheck-api.nymity.ch";
-export const extName = "FactCheck"
+export const Backend = "https://vox-api.nymity.ch";
+export const extName = "Vox"
 
 // Path and method of our API endpoints.
 export const api = {
