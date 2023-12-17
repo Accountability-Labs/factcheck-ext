@@ -131,10 +131,11 @@ function SignInOverlay({ setIsLoggedIn }) {
     }
 
     return (
-        <Box m={2}>
+        <>
             <Button fullWidth
                 type="submit"
                 variant="contained"
+                sx={{ mt: 3, mb: 2 }}
                 onClick={handleOpen}>
                 Sign in
             </Button>
@@ -177,7 +178,7 @@ function SignInOverlay({ setIsLoggedIn }) {
                     <Notification severity={notification.severity} text={notification.text} />
                 </Box>
             </Modal>
-        </Box>
+        </>
     )
 }
 
