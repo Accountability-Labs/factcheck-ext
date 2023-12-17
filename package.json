@@ -1,7 +1,7 @@
 {
   "name": "vox-ext",
   "displayName": "Vox",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Crowd-sourced fact checking",
   "author": "David & Philipp",
   "scripts": {
